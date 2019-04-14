@@ -12,7 +12,7 @@ abstract class NewsManager extends Manager
    * @return void
    */
   abstract protected function add(News $news);
-
+  
   /**
    * Méthode permettant d'enregistrer une news.
    * @param $news News la news à enregistrer
@@ -52,7 +52,7 @@ abstract class NewsManager extends Manager
    * @return array La liste des news. Chaque entrée est une instance de News.
    */
   abstract public function getList($debut = -1, $limite = -1);
-
+  
   /**
    * Méthode retournant une news précise.
    * @param $id int L'identifiant de la news à récupérer

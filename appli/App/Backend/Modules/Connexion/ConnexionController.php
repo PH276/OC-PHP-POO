@@ -9,12 +9,12 @@ class ConnexionController extends BackController
   public function executeIndex(HTTPRequest $request)
   {
     $this->page->addVar('title', 'Connexion');
-
+    
     if ($request->postExists('login'))
     {
       $login = $request->postData('login');
       $password = $request->postData('password');
-
+      
       if ($login == $this->app->config()->get('login') && $password == $this->app->config()->get('pass'))
       {
         $this->app->user()->setAuthenticated(true);

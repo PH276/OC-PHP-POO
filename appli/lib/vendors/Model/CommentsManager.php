@@ -26,7 +26,7 @@ abstract class CommentsManager extends Manager
    * @return void
    */
   abstract public function deleteFromNews($news);
-
+  
   /**
    * Méthode permettant d'enregistrer un commentaire.
    * @param $comment Le commentaire à enregistrer
@@ -43,7 +43,7 @@ abstract class CommentsManager extends Manager
       throw new \RuntimeException('Le commentaire doit être validé pour être enregistré');
     }
   }
-
+  
   /**
    * Méthode permettant de récupérer une liste de commentaires.
    * @param $news La news sur laquelle on veut récupérer les commentaires
@@ -57,7 +57,7 @@ abstract class CommentsManager extends Manager
    * @return void
    */
   abstract protected function modify(Comment $comment);
-
+  
   /**
    * Méthode permettant d'obtenir un commentaire spécifique.
    * @param $id L'identifiant du commentaire

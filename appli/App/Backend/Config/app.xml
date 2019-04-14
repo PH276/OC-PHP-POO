@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <definitions>
-  <define var="nombre_news" value="5" ></define>
-  <define var="login" value="admin" ></define>
-  <define var="pass" value="mdp" ></define>
+  <define var="login" value="admin" />
+  <define var="pass" value="mdp" />
 </definitions>

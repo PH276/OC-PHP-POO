@@ -3,7 +3,7 @@ namespace OCFram;
 
 session_start();
 
-class User extends ApplicationComponent
+class User
 {
   public function getAttribute($attr)
   {
