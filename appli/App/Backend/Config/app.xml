@@ -2,4 +2,5 @@
 <definitions>
   <define var="login" value="admin" />
   <define var="pass" value="mdp" />
+  <define var="path_cache" value="tmp\cache" />
 </definitions>

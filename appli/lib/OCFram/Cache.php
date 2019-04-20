@@ -6,14 +6,15 @@ class Cache extends ApplicationComponent{
     protected  $dateExpiry = null;
     protected  $content = '';
     protected  $delai = 0;
-    protected $type = '';
-    protected  $filename='';
+    protected  $filename = '';
 
-    public function __construct(Application $app, $type, $filename)
+    const SECONDES_JOUR = 86400;
+
+    public function __construct(Application $app, $filename)
     {
         parent::__construct($app);
-        $this->type = $type;
-        $this->filename = $filename;
+        $path_cache = __DIR__ . '\\..\\..\\' .$app->config()->get('path_cache');
+        $this->filename = $path_cache . $filename;
     }
 
     public function setDate($delay) {
@@ -54,9 +55,9 @@ class Cache extends ApplicationComponent{
     }
 
     public function removeCache(){
-        $this->dateExpiry = null;
-        $this->content = '';
-        unlink($this->filename);
+        if (file_exists($this->filename)){
+            unlink($this->filename);
+        }
     }
 
 }

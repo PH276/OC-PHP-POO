@@ -8,7 +8,7 @@ use \FormBuilder\CommentFormBuilder;
 use \OCFram\FormHandler;
 use \OCFram\Cache;
 
-class NewsController extends BackController
+class NewsController extends BackController implements \SplObserver
 {
     public function executeIndex(HTTPRequest $request)
     {
@@ -40,9 +40,7 @@ class NewsController extends BackController
 
     public function executeShow(HTTPRequest $request)
     {
-        $path_cache = __DIR__ . '\\..\\..\\..\\..\\' .$this->app->config()->get('path_cache');
-        $filenameNews = $path_cache . '\\datas\\views-' . $request->getData('id');
-        $cacheNews = new Cache($this->app, 'datas', $filenameNews);
+        $cacheNews = new Cache($this->app, '\\datas\\news-' . $request->getData('id'));
         if ($cacheNews->isValid()){
             $news = unserialize($cacheNews->getContent());
         }
@@ -62,18 +60,17 @@ class NewsController extends BackController
         $this->page->addVar('title', $news->titre());
         $this->page->addVar('news', $news);
 
-        $filenameComments = $path_cache . '\\datas\\comments-' . $request->getData('id');
-        $cacheComments = new Cache($this->app, 'datas', $filenameComments);
+        $cacheComments = new Cache($this->app, '\\datas\\comments-' . $request->getData('id'));
 
         if ($cacheComments->isValid()){
-            $litOfComments = explode(PHP_EOL, $cacheComments->getContent());
-            $allComments = [];
-            foreach($litOfComments  as $cacheCommentContent){
+            $listOfComments = explode(PHP_EOL, $cacheComments->getContent());
+            $allCommentsObject = [];
+            foreach($listOfComments  as $cacheCommentContent){
                 if (!empty($cacheCommentContent)){
-                    $allComments[] = unserialize($cacheCommentContent);
+                    $allCommentsObject[] = unserialize($cacheCommentContent);
                 }
             }
-            $this->page->addVar('comments', $allComments);
+            $this->page->addVar('comments', $allCommentsObject);
         }
         else{
 
@@ -87,9 +84,6 @@ class NewsController extends BackController
             $cacheComments->setContent($commentsSerialize);
             $cacheComments->genereCache();
         }
-
-
-
     }
 
     public function executeInsertComment(HTTPRequest $request)
@@ -113,7 +107,10 @@ class NewsController extends BackController
 
         $form = $formBuilder->form();
 
-        $formHandler = new FormHandler($form, $this->managers->getManagerOf('Comments'), $request);
+        $manager = $this->managers->getManagerOf('Comments');
+        $manager->attach($this);
+
+        $formHandler = new FormHandler($form, $manager, $request);
 
         if ($formHandler->process())
         {
@@ -130,30 +127,16 @@ class NewsController extends BackController
     public function createCache()
     {
         $viewsToCache = ['index' => '3'];
-        $validedCache = false;
 
-        $viewToCache = (array_key_exists($this->view, $viewsToCache))?true:false;
-        if  ($viewToCache){
-            $path_cache = __DIR__ . '\\..\\..\\..\\..\\' .$this->app->config()->get('path_cache');
-            $filename = $path_cache . '\\views\\' . $this->app->name() . '_' . $this->module . '_' . $this->view;
-            $cache = new Cache($this->app, 'views', $filename);
-            $validedCache = $cache->isValid();
-            if ($validedCache){
-                $this->page->setContentView($cache->getContent());
-            }else{
-                $this->execute();
-                $this->page->genereView();
-                $cache->setDate($viewsToCache[$this->view] * 86400);
-                $cache->setContent($this->page->getContentView());
-                $cache->genereCache();
-            }
-
-        }else
-        {
-            $this->execute();
-            $this->page->genereView();
-        }
-
+        return $viewsToCache;
     }
 
+    public function update(\SplSubject $obj){}
+
+    public function update2($element, $news){
+        if ($element == 'comments'){
+            $cache = new Cache($this->app, '\\datas\\comments-' . $news);
+            $cache->removeCache();
+        }
+    }
 }

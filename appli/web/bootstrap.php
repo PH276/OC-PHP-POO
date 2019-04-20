@@ -28,4 +28,5 @@ $formBuilderLoader->register();
 $appClass = 'App\\'.$_GET['app'].'\\'.$_GET['app'].'Application';
 
 $app = new $appClass;
+
 $app->run();
