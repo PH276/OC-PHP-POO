@@ -47,7 +47,7 @@ class NewsController extends BackController implements \SplObserver
         else{
 
             $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-            $cacheNews->setDate(3 * 86400);
+            $cacheNews->setDate(3 * Cache::SECONDES_JOUR);
             $cacheNews->setContent(serialize($news));
             $cacheNews->genereCache();
         }

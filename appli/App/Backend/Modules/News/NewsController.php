@@ -152,18 +152,11 @@ class NewsController extends BackController implements \SplObserver
         if ($element == 'news' || $element == 'comments'){
             $cache = new Cache($this->app, '\\datas\\' . $element . '-' . $news);
             $cache->removeCache();
-            $id_file = fopen('log', 'a');
-            fwrite ($id_file, $element.'-'.$news.PHP_EOL);
-            fclose($id_file);
-
         }
 
         if ($element == 'news'){
             $cache = new Cache($this->app, '\\views\\Frontend_News_index');
             $cache->removeCache();
-            $id_file = fopen('log', 'a');
-            fwrite ($id_file, 'vue-'.$news.PHP_EOL);
-            fclose($id_file);
         }
     }
 }

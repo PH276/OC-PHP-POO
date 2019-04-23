@@ -71,7 +71,8 @@ class CommentsManagerPDO extends CommentsManager implements \SplSubject
 
         $q->execute();
 
-        $this->notify2($comment->news());
+
+        $this->notify2($this->get($comment->id())->news());
     }
 
     public function get($id)

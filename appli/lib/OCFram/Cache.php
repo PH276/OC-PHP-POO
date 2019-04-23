@@ -50,7 +50,7 @@ class Cache extends ApplicationComponent{
     public function genereCache(){
         $id_file = fopen($this->filename, 'w');
         fwrite ($id_file, $this->dateExpiry.PHP_EOL);
-        fwrite ($id_file, $this->content.PHP_EOL);
+        fwrite ($id_file, $this->content);
         fclose($id_file);
     }
 
